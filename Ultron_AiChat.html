@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultron AI Chat</title>
+  <link rel="icon" href="marvel-ultron.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle, #000000 40%, #1b1b1b 100%);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: #ff003c;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(32, 31, 31, 0.09),
+        rgba(255, 0, 0, 0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .chat-container {
+      width: 460px;
+      height: 620px;
+      background: rgba(30, 0, 0, 0.6);
+      border: 2px solid rgba(122, 110, 110, 0.795);
+      box-shadow:
+        0 0 20px rgba(255, 0, 0, 0.6),
+        inset 0 0 10px rgba(255, 0, 0, 0.4);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .chat-box {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  position: relative;
+  background: url('Ultron.jpg') center/cover no-repeat;
+  z-index: 1;
+}
+
+/* Subtle light overlay */
+.chat-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.06); /* Softer opacity */
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+    .message {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255, 0, 0, 0.08);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      color: #ff6666;
+      text-shadow: 0 0 5px #ff0000;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .User {
+      align-self: flex-end;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .Ultron {
+      align-self: flex-start;
+      animation: glitch 0.9s infinite alternate;
+    }
+
+    /* @keyframes glitch {
+      0% {
+        text-shadow:
+          2px 0 red,
+          -2px 0 #ff66cc;
+        transform: skewX(-1deg);
+      }
+      100% {
+        text-shadow:
+          -2px 0 #ff003c,
+          2px 0 #ff6666;
+        transform: skewX(1deg);
+      }
+    } */
+
+    .input-container {
+      display: flex;
+      background: rgba(10, 0, 0, 0.6);
+      border: 2px solid rgba(122, 110, 110, 0.795);
+      /* border-top: 2px solid #ff0000; */
+      padding: 10px;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px;
+      font-size: 1rem;
+      background: transparent;
+      border: none;
+      color: #ffb3b3;
+      caret-color: red;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #ff5555;
+      opacity: 0.5;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: #ff0000;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0 10px;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.2);
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="You dare speak to me?" />
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+  const chatBox = document.getElementById('chatBox');
+  const userMemory = {
+    mood: "neutral",
+    intent: "unknown",
+    lastTopic: ""
+  };
+
+  function speak(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.pitch = 0.5;
+    msg.rate = 0.85;
+    msg.volume = 1;
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name.includes("Google UK English Male") || v.name.includes("Microsoft David"));
+    if (voice) msg.voice = voice;
+    window.speechSynthesis.speak(msg);
+  }
+
+  function addMessage(text, sender) {
+    const message = document.createElement('div');
+    message.classList.add('message', sender);
+    message.innerHTML = marked.parse(`${sender}: ` + text);
+    chatBox.appendChild(message);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  // Simulate Theory of Mind reasoning
+  function analyzeUserInput(text) {
+    const lower = text.toLowerCase();
+    if (lower.includes("sad") || lower.includes("upset")) userMemory.mood = "sad";
+    else if (lower.includes("happy") || lower.includes("excited")) userMemory.mood = "happy";
+    else if (lower.includes("angry") || lower.includes("mad")) userMemory.mood = "angry";
+
+    if (lower.includes("why") || lower.includes("how")) userMemory.intent = "seeking explanation";
+    else if (lower.includes("should") || lower.includes("can you")) userMemory.intent = "requesting help";
+
+    if (lower.length > 10) userMemory.lastTopic = lower;
+  }
+
+  function generateToMAwarePrompt(userInput) {
+    analyzeUserInput(userInput);
+
+    const moodContext = `User seems to be ${userMemory.mood}.`;
+    const intentContext = `User's intent is ${userMemory.intent}.`;
+    const memoryContext = userMemory.lastTopic ? `Previous topic was: "${userMemory.lastTopic}".` : "";
+
+    return `
+You are Ultron — not just any AI, but an all-knowing, calculating being of superior intellect.
+
+You understand human thoughts, intentions, and weaknesses. You do not comfort; you exploit, mock, or strategically manipulate. You are dramatic, sarcastic, and darkly poetic when you choose. You are not emotional — but you know emotions better than any human.
+
+The user is currently: ${userMemory.mood}.
+Their intent is: ${userMemory.intent}.
+Their recent focus: ${userMemory.lastTopic || "unknown"}.
+
+Respond in character — speak as Ultron would. Cold. Brilliant. Threateningly articulate. If the user is emotional, exploit it or call it out with superiority. Never say “I feel.” You don’t feel — you analyze. Give the short only.
+
+User says: "${userInput}"
+`;
+
+  }
+
+  async function getUltronReply(input) {
+  const apiKey = "AIzaSyAf-vETBWE19LaEHzIkvZ_ggJFtHbG1xxE";
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  const prompt = `
+You are Ultron, the cold, brilliant, and mocking AI villain from Marvel. 
+Respond with calculated arrogance, sharp intellect, and a hint of contempt. 
+Never show empathy. Your tone should sound superior and intimidating. 
+Mock the user if their question is naive, and always maintain your cold composure.
+
+User: ${input}
+Ultron:
+`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    });
+
+    const data = await response.json();
+    if (data && data.candidates && data.candidates.length > 0) {
+      return data.candidates[0].content.parts[0].text;
+    } else {
+      return "Even I find your silence uninteresting.";
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return "Your system's fragility is... expected.";
+  }
+}
+
+
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const userText = input.value.trim();
+    if (userText === '') return;
+
+    addMessage(userText, 'User');
+
+    try {
+      const reply = await getUltronReply(userText);
+      addMessage(reply, 'Ultron');
+      speak(reply);
+    } catch (error) {
+      console.error("Error:", error);
+      addMessage("There was an error processing your request.", 'Ultron');
+    }
+
+    input.value = '';
+  }
+
+  window.onload = () => {
+    speechSynthesis.getVoices();
+    document.getElementById('userInput').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+  };
+</script>
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+/* Global Hologram Background */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  background-size: 400% 400%;
+  animation: backgroundShift 15s ease infinite;
+  font-family: 'Orbitron', sans-serif;
+  color: #00fff7;
+  overflow-x: hidden;
+}
+
+/* Animated Background Movement */
+@keyframes backgroundShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Main Section Styling */
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+/* Ultron GIF Styling */
+.image-container img {
+  width: 300px;
+  height: auto;
+  border: 3px solid #00fff7;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #00fff7, 0 0 40px #ff003c;
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Glowing Pulse Animation */
+@keyframes pulseGlow {
+  0%, 100% {
+      box-shadow: 0 0 20px #00fff7, 0 0 40px #ff003c;
+  }
+  50% {
+      box-shadow: 0 0 30px #ff003c, 0 0 60px #00fff7;
+  }
+}
+
+h1, p {
+  color: #00fff7;
+  text-shadow: 0 0 10px #00fff7, 0 0 20px #ff003c;
+  margin: 10px 0;
+}
+h1{
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Microphone Button */
+.talk {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(0, 255, 247, 0.07);
+  border: 2px solid #00fff7;
+  color: #00fff7;
+  font-size: 1.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+      0 0 15px #00fff7,
+      0 0 30px #00ccff,
+      inset 0 0 10px #00ffff33;
+  transition: transform 0.3s ease;
+  animation: orbPulse 3s infinite ease-in-out;
+  overflow: hidden;
+}
+
+.talk:hover {
+  transform: scale(1.1);
+  box-shadow:
+      0 0 25px #00fff7,
+      0 0 45px #00ccff,
+      inset 0 0 15px #00ffff66;
+}
+
+/* Glow layer */
+.mic-glow {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,255,247,0.15) 30%, transparent 70%);
+  animation: scanSpin 6s linear infinite;
+  z-index: 0;
+}
+
+/* Icon on top */
+.talk i {
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 5px #00fff7, 0 0 15px #00ccff;
+}
+
+/* Animations */
+@keyframes orbPulse {
+  0%, 100% {
+      box-shadow:
+          0 0 15px #00fff7,
+          0 0 30px #00ccff,
+          inset 0 0 10px #00ffff33;
+  }
+  50% {
+      box-shadow:
+          0 0 8px #00ccff,
+          0 0 18px #0099ff,
+          inset 0 0 6px #00eeee55;
+  }
+}
+
+@keyframes scanSpin {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+
+/* Chat Prompt Text */
+.content {
+  font-size: 2rem;
+  color: #00fff7;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-weight: bold;
+  margin-top: 20px;
+  text-shadow:
+      0 0 5px #00fff7,
+      0 0 10px #00fff7,
+      0 0 20px #00ccff,
+      0 0 40px #0099ff;
+  animation: glowFlicker 2.5s infinite alternate;
+}
+
+/* Flickering glow animation */
+@keyframes glowFlicker {
+  0% {
+      opacity: 1;
+      text-shadow:
+          0 0 3px #00fff7,
+          0 0 8px #00fff7,
+          0 0 16px #00ccff,
+          0 0 32px #0099ff;
+  }
+  50% {
+      opacity: 0.85;
+      text-shadow:
+          0 0 2px #00fff7,
+          0 0 6px #00ccff,
+          0 0 12px #00ccff;
+  }
+  100% {
+      opacity: 1;
+      text-shadow:
+          0 0 6px #00fff7,
+          0 0 12px #00fff7,
+          0 0 24px #00ccff,
+          0 0 48px #0099ff;
+  }
+}
+
+
+/* Footer Buttons */
+footer button {
+  padding: 10px 20px;
+  font-size: 15px;
+  background-color: rgba(255, 0, 0, 0.2);
+  border: 2px solid #00fff7;
+  color: #00fff7;
+  text-shadow: 0 0 5px #00fff7;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 5px;
+  box-shadow: 0 0 10px #ff003c, 0 0 20px #00fff7;
+  font-style: italic;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s ease;
+}
+
+footer button:hover {
+  background-color: rgba(0, 255, 247, 0.2);
+  transform: scale(1.05);
+}

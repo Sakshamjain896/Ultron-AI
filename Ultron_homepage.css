@@ -1,0 +1,164 @@
+ /*Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .login-container {
+    background-image: url(Ultron.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px #0081f9;
+    color: #fff;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+
+   .login-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 0;
+    border-radius: 10px;
+  }
+  .login-container * {
+    position: relative;
+    z-index: 1;
+  } 
+  
+  
+  .glitch {
+    font-size: 60px;
+    font-weight: bold;
+    color: #ff003c;
+    position: relative;
+    text-transform: uppercase;
+    text-shadow:2px 2px 5px #0081f9;
+
+  }
+  .glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: red;
+  background: none;
+  /* opacity: 0; */
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+}
+
+.glitch::before {
+  animation: glitchTop 1s infinite linear alternate-reverse;
+  left: 2px;
+  color: #00fff9;
+}
+
+.glitch::after {
+  animation: glitchBottom 1s infinite linear alternate-reverse;
+  left: -2px;
+  color: #ff00ff;
+}
+
+@keyframes glitchTop {
+  0% { clip: rect(0, 900px, 0, 0); }
+  10% { clip: rect(0, 900px, 30px, 0); }
+  20% { clip: rect(10px, 900px, 50px, 0); }
+  30% { clip: rect(5px, 900px, 20px, 0); }
+  100% { clip: rect(0, 900px, 0, 0); }
+}
+
+@keyframes glitchBottom {
+  0% { clip: rect(0, 900px, 0, 0); }
+  10% { clip: rect(40px, 900px, 60px, 0); }
+  20% { clip: rect(20px, 900px, 40px, 0); }
+  30% { clip: rect(60px, 900px, 80px, 0); }
+  100% { clip: rect(0, 900px, 0, 0); }
+}
+  
+  .quote {
+    font-style: italic;
+    color: #0081f9;
+    margin-bottom: 25px;
+  }
+  
+  .input-box {
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    background-color: #222;
+    color: #fff;
+  }
+  
+  .login-btn {
+    background-color: #ff003c;
+    color: #0081f9;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 0 15px #ff003c;
+  }
+  
+  .login-btn:hover {
+    background-color: #cc002f;
+    box-shadow: 0 0 20px #0081f9, 0 0 30px #ff003c;
+  }
+  
+  .error-message {
+    margin-top: 15px;
+    color: #f55;
+    font-weight: bold;
+  }
+  
+  footer {
+    margin-top: 40px;
+    font-size: 0.8em;
+    color: #0081f9;
+    text-align: center;
+  }
+  
+  /* Responsive Design */
+   @media (max-width: 480px) {
+    .login-container {
+      padding: 30px 20px;
+    }
+  
+    .glitch {
+      font-size: 2em;
+    }
+  
+    .quote {
+      font-size: 0.9em;
+    }
+  }

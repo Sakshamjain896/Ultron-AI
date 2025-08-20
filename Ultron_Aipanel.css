@@ -1,0 +1,108 @@
+/* Holographic Ultron Style */
+body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+  color: #00f7ff;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hologram-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: url('your-ultron-background.jpg') center/cover no-repeat;
+  /* filter: brightness(0.3) contrast(1.2); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hologram-panel {
+  background: url('Ultron.jpg') center/cover no-repeat;
+  border: 2px solid #00f7ff;
+  box-shadow:
+    0 0 25px #ff004c,
+    0 0 45px rgba(0, 247, 255, 0.4),
+    inset 0 0 15px rgba(0, 247, 255, 0.4);
+  padding: 50px;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  text-align: center;
+  max-width: 500px;
+  animation: flickerPanel 3s infinite alternate;
+}
+
+.hologram-panel h1 {
+  font-size: 2.5em;
+  color: #ff004c;
+  text-shadow: 0 0 12px #ff004c, 0 0 20px #ff004c;
+  margin-bottom: 20px;
+  animation: glowTitle 2s ease-in-out infinite;
+}
+
+.status {
+  font-size: 1.1em;
+  color: #00f7ff;
+  margin-bottom: 25px;
+  text-shadow: 0 0 8px #ff004c;
+  animation: flickerText 2.5s infinite;
+}
+
+.monitor-btn {
+  background: linear-gradient(to right, #00f7ff, #ff004c);
+  color: #000;
+  padding: 12px 30px;
+  font-size: 1em;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00f7ff, 0 0 25px #ff004c;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.monitor-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #ff004c, 0 0 30px #00f7ff;
+}
+
+/* Animations */
+@keyframes glowTitle {
+  0% {
+    text-shadow: 0 0 5px #ff004c;
+  }
+  50% {
+    text-shadow: 0 0 20px #ff004c, 0 0 30px #ff004c;
+  }
+  100% {
+    text-shadow: 0 0 5px #00f7ff;
+  }
+}
+
+@keyframes flickerText {
+  0%, 100% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.7;
+  }
+  55% {
+    opacity: 0.85;
+  }
+  75% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes flickerPanel {
+  0%, 100% {
+    box-shadow: 0 0 25px #00f7ff, inset 0 0 15px rgba(0, 247, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 35px #ff004c, inset 0 0 25px rgba(0, 247, 255, 0.5);
+  }
+}

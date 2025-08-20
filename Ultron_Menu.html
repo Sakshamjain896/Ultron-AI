@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ULTRON - Control Hub</title>
+  <link rel="icon" href="marvel-ultron.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle, #0f0c29, #302b63, #000000);
+      color: #00ffe7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .menu {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #00ffe7;
+      border-radius: 15px;
+      box-shadow: 0 0 25px #00ffe7, 0 0 50px #ff0000;
+      text-align: center;
+      padding: 30px;
+      position: relative;
+      backdrop-filter: blur(6px);
+    }
+
+    .menu::before {
+      content: '';
+      background: url('ultron.gif') no-repeat center center/cover;
+      position: absolute;
+      border-radius: 15px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.9;
+      z-index: 0;
+    }
+
+    .banner {
+  position: relative;
+  height: 300px;
+  width: 100%;
+  background: url('ultron.gif') no-repeat center center;
+  background-size: cover; /* Makes GIF fit inside without cropping */
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+    .menu-title {
+      font-size: 2.5rem;
+      color: #ff003c;
+      text-shadow: 0 0 10px #00ffe7, 0 0 20px #ff003c;
+      z-index: 2;
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .menu-buttons, .back-home {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      z-index: 1;
+      position: relative;
+    }
+
+    .futuristic-button {
+      padding: 15px 30px;
+      font-size: 16px;
+      background: rgba(255, 0, 60, 0.2);
+      border: 2px solid #00ffe7;
+      color: #00ffe7;
+      text-shadow: 0 0 5px #00ffe7;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #00ffe7, 0 0 20px #ff003c;
+    }
+
+    .futuristic-button:hover {
+      background: rgba(0, 255, 231, 0.1);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff003c, 0 0 40px #00ffe7;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="menu">
+    <h1 class="menu-title">ULTRON - Control Hub</h1>
+
+    <div class="menu-buttons">
+      <button onclick="window.open('Ultron_Ai.html', '_blank')" class="futuristic-button">
+        Trigger Communication Sequence
+      </button>
+
+      <button onclick="window.open('Ultron_AiPanel.html', '_blank')" class="futuristic-button">
+        Engage Intelligence Core
+      </button>
+    </div>
+
+    <div class="back-home" style="margin-top: 30px;">
+      <button onclick="window.location.href='index.html'" class="futuristic-button">
+        Return to Main
+      </button>
+    </div>
+  </section>
+</body>
+
+</html>
