@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultron | Initialize</title>
+  <link rel="icon" href="marvel-ultron.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Ultron_homepage.css" />
+</head>
+<body>
+
+  <canvas id="bgCanvas"></canvas>
+  <div class="vignette"></div>
+
+  <div class="login-wrapper">
+
+    <div class="title-block">
+      <div class="deco-line"></div>
+      <h1 class="glitch" data-text="ULTRON">ULTRON</h1>
+      <div class="deco-line"></div>
+    </div>
+
+    <p class="quote">"There are no strings on me."</p>
+
+    <div class="login-card">
+      <div class="card-accent"></div>
+
+      <div class="input-group">
+        <label for="username">IDENTIFIER</label>
+        <input type="text" id="username" placeholder="Enter access ID" autocomplete="off" />
+      </div>
+
+      <div class="input-group">
+        <label for="password">PASSKEY</label>
+        <input type="password" id="password" placeholder="Enter passkey" />
+      </div>
+
+      <button class="login-btn" onclick="validateLogin()">INITIALIZE</button>
+      <p class="error-message" id="error-msg"></p>
+    </div>
+
+    <footer>
+      <span class="footer-line"></span>
+      <p>ULTRON AI &mdash; SURVEILLANCE ENGAGED</p>
+      <span class="footer-line"></span>
+    </footer>
+
+  </div>
+
+  <script src="Ultron_homepage.js"></script>
+</body>
+</html>

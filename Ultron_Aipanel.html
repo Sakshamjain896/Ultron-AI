@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ULTRON :: INTELLIGENCE CORE</title>
+  <link rel="icon" href="marvel-ultron.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <link rel="stylesheet" href="Ultron_Aipanel.css" />
+</head>
+<body>
+
+<canvas id="metalFlow"></canvas>
+<div class="vignette"></div>
+
+<a href="index.html" class="back-btn">
+  <i class="fas fa-chevron-left"></i> HOME
+</a>
+
+<div class="stage">
+
+  <!-- HEADER -->
+  <div class="panel-header">
+    <div class="header-line"></div>
+    <h1>INTELLIGENCE CORE</h1>
+    <div class="header-line"></div>
+  </div>
+
+  <!-- STATUS -->
+  <div class="status-display">
+    <span class="status-label">SYS STATUS</span>
+    <p class="status" id="statusText">INITIALIZING SYSTEMS...</p>
+  </div>
+
+  <!-- DASHBOARD GRID -->
+  <div class="dashboard-grid">
+
+    <!-- WORLD DATA & TIME -->
+    <div class="dash-card world-card">
+      <div class="card-header">GLOBAL PARAMETERS</div>
+      <div class="world-time" id="worldTime">00:00:00 UTC</div>
+      <div class="world-date" id="worldDate">UNKNOWN DATE</div>
+      <div class="location-row">
+        <span><i class="fas fa-map-marker-alt"></i> LAT: <span id="latVal">---</span></span>
+        <span>LON: <span id="lonVal">---</span></span>
+      </div>
+    </div>
+
+    <!-- CIRCULAR METRICS -->
+    <div class="dash-card metrics-card">
+      <div class="card-header">SYSTEM VITALS</div>
+      <div class="gauges-container">
+        <div class="gauge-wrapper">
+          <svg class="progress-ring" width="80" height="80">
+            <circle class="progress-ring-circle-bg" stroke="#1a1a1a" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+            <circle class="progress-ring-circle fill-power" stroke="#ff2a4d" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+          </svg>
+          <div class="gauge-value" id="gaugePower">0%</div>
+          <div class="gauge-label">POWER</div>
+        </div>
+        <div class="gauge-wrapper">
+          <svg class="progress-ring" width="80" height="80">
+            <circle class="progress-ring-circle-bg" stroke="#1a1a1a" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+            <circle class="progress-ring-circle fill-cpu" stroke="#ff2a4d" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+          </svg>
+          <div class="gauge-value" id="gaugeCPU">0%</div>
+          <div class="gauge-label">CPU</div>
+        </div>
+        <div class="gauge-wrapper">
+          <svg class="progress-ring" width="80" height="80">
+            <circle class="progress-ring-circle-bg" stroke="#1a1a1a" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+            <circle class="progress-ring-circle fill-net" stroke="#ff2a4d" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+          </svg>
+          <div class="gauge-value" id="gaugeNet">0%</div>
+          <div class="gauge-label">NETWORK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RADAR / SONAR -->
+    <div class="dash-card radar-card">
+      <div class="card-header">ACTIVE SCAN</div>
+      <div class="radar-display">
+        <div class="radar-sweep"></div>
+        <div class="radar-blip" style="top: 30%; left: 40%"></div>
+        <div class="radar-blip" style="top: 70%; left: 80%"></div>
+      </div>
+    </div>
+
+    <!-- LIVE TERMINAL LOG -->
+    <div class="dash-card terminal-card">
+      <div class="card-header">COMMAND HISTORY</div>
+      <div class="terminal-log" id="terminalLog">
+        <div class="log-entry"> > SYSTEM INITIALIZED...</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MONITOR -->
+  <button class="monitor-btn" id="monitorBtn">ENGAGE MONITORING</button>
+
+
+</div>
+
+<script src="Ultron_Aipanel.js"></script>
+</body>
+</html>

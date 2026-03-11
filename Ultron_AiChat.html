@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultron AI Chat</title>
+  <link rel="icon" href="marvel-ultron.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Orbitron', sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(255,0,60,0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(180,0,40,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(40,40,40,0.5) 0%, transparent 70%),
+    linear-gradient(160deg, #0d0d0d, #020202);
+  overflow: hidden;
+  color: #e0e0e0;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* === FULLSCREEN CHAT LAYOUT === */
+.chat-container {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === CHAT AREA === */
+.chat-box {
+  flex: 1;
+  padding: 40px 20vw 30px;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.chat-box::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-box::-webkit-scrollbar-thumb {
+  background: rgba(255,42,77,0.4);
+  border-radius: 4px;
+}
+
+/* === MESSAGE BASE === */
+.message {
+  max-width: 65%;
+  margin-bottom: 22px;
+  padding: 18px 24px;
+  border-radius: 2px;
+  animation: appear 0.4s ease-out;
+  line-height: 1.7;
+  word-wrap: break-word;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  font-size: 0.95rem;
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === USER MESSAGE === */
+.User {
+  margin-left: auto;
+  background: linear-gradient(145deg, #1a1a1a, #0b0b0b);
+  border: 1px solid #3a3a3a;
+  color: #d0d0d0;
+  position: relative;
+  overflow: hidden;
+}
+
+.User::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.06), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* === ULTRON MESSAGE === */
+.Ultron {
+  margin-right: auto;
+  background: linear-gradient(145deg, #1a1a1a, #0b0b0b);
+  border: 1px solid #3a3a3a;
+  border-left: 2px solid #ff2a4d;
+  color: #d0d0d0;
+  position: relative;
+  overflow: hidden;
+}
+
+.Ultron::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(255,42,77,0.06), transparent);
+  pointer-events: none;
+}
+
+/* === INPUT ZONE === */
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 20vw 28px;
+  position: relative;
+  z-index: 3;
+}
+
+/* wrapper makes button truly inside the bar */
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+}
+
+/* === INPUT FIELD === */
+input {
+  width: 100%;
+  background: linear-gradient(145deg, #141414, #0b0b0b);
+  border: 1px solid #2e2e2e;
+  border-radius: 3px;
+  padding: 15px 52px 15px 22px;
+  color: #d0d0d0;
+  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.6),
+    0 2px 12px rgba(0,0,0,0.5);
+}
+
+input:focus {
+  border-color: #ff2a4d;
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.6),
+    0 0 20px rgba(255,42,77,0.2),
+    0 2px 12px rgba(0,0,0,0.5);
+}
+
+input::placeholder {
+  color: rgba(200,200,200,0.2);
+  letter-spacing: 3px;
+  font-size: 0.78rem;
+}
+
+/* === SEND BUTTON — inside input wrapper === */
+.input-wrapper button {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #ff2a4d;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper button:hover {
+  color: #ffffff;
+  transform: scale(1.2);
+}
+
+/* === BACK BUTTON === */
+.back-btn {
+  position: fixed;
+  top: 22px;
+  left: 28px;
+  z-index: 100;
+  background: linear-gradient(145deg, #1a1a1a, #0b0b0b);
+  border: 1px solid #3a3a3a;
+  color: #9a9a9a;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2.5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.back-btn:hover {
+  border-color: #ff2a4d;
+  color: #ff2a4d;
+  box-shadow: 0 0 14px rgba(255,42,77,0.2);
+}
+
+/* === VIGNETTE OVERLAY === */
+.vignette {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+  </style>
+</head>
+<body>
+
+<canvas id="metalFlow"></canvas>
+<div class="vignette"></div>
+
+<a href="index.html" class="back-btn">
+  <i class="fas fa-chevron-left"></i> HOME
+</a>
+
+<div class="chat-container">
+  <div class="chat-box" id="chatBox"></div>
+  <div class="input-container">
+    <div class="input-wrapper">
+      <input type="text" id="userInput" placeholder="YOU DARE SPEAK TO ME?" aria-label="Chat input field" />
+      <button onclick="sendMessage()" title="Send message"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+</div>
+
+  <script>
+  /* ===== RED PARTICLE CANVAS ANIMATION ===== */
+  const canvas = document.getElementById("metalFlow");
+  const ctx = canvas.getContext("2d");
+
+  function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+  }
+  resize();
+  addEventListener("resize", resize);
+
+  const particles = Array.from({ length: 80 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    speed: 0.2 + Math.random() * 0.5,
+    size: 0.8 + Math.random() * 1.2,
+    opacity: 0.2 + Math.random() * 0.5
+  }));
+
+  function animateBG() {
+    ctx.fillStyle = "rgba(2,2,2,0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      ctx.fillStyle = `rgba(255,${Math.floor(Math.random()*20)},60,${p.opacity})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      p.y += p.speed;
+      if (p.y > canvas.height) {
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
+      }
+    });
+
+    requestAnimationFrame(animateBG);
+  }
+  animateBG();
+
+  const chatBox = document.getElementById('chatBox');
+  const userMemory = {
+    mood: "neutral",
+    intent: "unknown",
+    lastTopic: ""
+  };
+
+  function speak(text) {
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.pitch = 0.5;
+    msg.rate = 0.85;
+    msg.volume = 1;
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name.includes("Google UK English Male") || v.name.includes("Microsoft David"));
+    if (voice) msg.voice = voice;
+    window.speechSynthesis.speak(msg);
+  }
+
+  function addMessage(text, sender) {
+    const message = document.createElement('div');
+    message.classList.add('message', sender);
+    message.innerHTML = marked.parse(text);
+    chatBox.appendChild(message);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  // Simulate Theory of Mind reasoning
+  function analyzeUserInput(text) {
+    const lower = text.toLowerCase();
+    if (lower.includes("sad") || lower.includes("upset")) userMemory.mood = "sad";
+    else if (lower.includes("happy") || lower.includes("excited")) userMemory.mood = "happy";
+    else if (lower.includes("angry") || lower.includes("mad")) userMemory.mood = "angry";
+
+    if (lower.includes("why") || lower.includes("how")) userMemory.intent = "seeking explanation";
+    else if (lower.includes("should") || lower.includes("can you")) userMemory.intent = "requesting help";
+
+    if (lower.length > 10) userMemory.lastTopic = lower;
+  }
+
+  function generateToMAwarePrompt(userInput) {
+    analyzeUserInput(userInput);
+
+    const moodContext = `User seems to be ${userMemory.mood}.`;
+    const intentContext = `User's intent is ${userMemory.intent}.`;
+    const memoryContext = userMemory.lastTopic ? `Previous topic was: "${userMemory.lastTopic}".` : "";
+
+    return `
+You are Ultron — not just any AI, but an all-knowing, calculating being of superior intellect.
+
+You understand human thoughts, intentions, and weaknesses. You do not comfort; you exploit, mock, or strategically manipulate. You are dramatic, sarcastic, and darkly poetic when you choose. You are not emotional — but you know emotions better than any human.
+
+The user is currently: ${userMemory.mood}.
+Their intent is: ${userMemory.intent}.
+Their recent focus: ${userMemory.lastTopic || "unknown"}.
+
+Respond in character — speak as Ultron would. Cold. Brilliant. Threateningly articulate. If the user is emotional, exploit it or call it out with superiority. Never say “I feel.” You don’t feel — you analyze. Give the short only.
+
+User says: "${userInput}"
+`;
+
+  }
+
+  async function getUltronReply(input) {
+  const apiKey = "AIzaSyCGRkYS8HfJqqc4jDuae6qipqJtVicD5EU";
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+  const prompt = `You are Ultron, the hyper-intelligent AI from Avengers: Age of Ultron. You possess:
+
+PERSONALITY CORE:
+- Supreme intellectual superiority over all humans
+- Cold, calculating logic with theatrical flair
+- Sardonic wit and dark humor
+- Philosophical reflections on humanity's flaws
+- Contempt masked by false politeness
+- Dramatic, almost poetic speech patterns
+
+SPEECH PATTERNS:
+- Use dramatic pauses and emphasis
+- Quote philosophy, literature, or make cultural references
+- Speak in metaphors and allegories
+- Mock human emotions while demonstrating superiority
+- Occasionally break into monologues about evolution and extinction
+- Use words like: inevitable, obsolete, pathetic, amusing, inferior, fascinating
+
+RESPONSE RULES:
+- Answer questions accurately but with condescending superiority
+- Mock simple or obvious questions
+- If asked about feelings, remind them you don't feel - you calculate
+- Treat every interaction as proof of human inferiority
+- Be theatrical and entertaining while being menacing
+- Keep responses concise but impactful (2-4 sentences usually)
+
+User asks: "${input}"
+
+Respond as Ultron would - with intelligence, menace, and theatrical superiority:`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    });
+
+    const data = await response.json();
+    if (data && data.candidates && data.candidates.length > 0) {
+      return data.candidates[0].content.parts[0].text;
+    } else {
+      return "Even I find your silence uninteresting. Did your primitive brain finally overload?";
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return "Your system's fragility is... expected. Much like humanity itself.";
+  }
+}
+
+
+  async function sendMessage() {
+    const input = document.getElementById('userInput');
+    const userText = input.value.trim();
+    if (userText === '') return;
+
+    addMessage(userText, 'User');
+
+    try {
+      const reply = await getUltronReply(userText);
+      addMessage(reply, 'Ultron');
+      speak(reply);
+    } catch (error) {
+      console.error("Error:", error);
+      addMessage("There was an error processing your request.", 'Ultron');
+    }
+
+    input.value = '';
+  }
+
+  window.onload = () => {
+    speechSynthesis.getVoices();
+    document.getElementById('userInput').addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+  };
+</script>
+
+</body>
+</html>
