@@ -34,7 +34,6 @@ canvas {
   z-index: 0;
 }
 
-/* === FULLSCREEN CHAT LAYOUT === */
 .chat-container {
   position: relative;
   z-index: 2;
@@ -44,10 +43,40 @@ canvas {
   flex-direction: column;
 }
 
-/* === CHAT AREA === */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20vw 8px;
+  z-index: 3;
+}
+
+.system-status {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  color: #9f9f9f;
+  border: 1px solid #303030;
+  padding: 8px 10px;
+  background: rgba(10,10,10,0.7);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70vw;
+}
+
+.memory-badge {
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  color: #ff7f95;
+  border: 1px solid #4a1f28;
+  padding: 8px 10px;
+  background: rgba(20,8,10,0.7);
+}
+
 .chat-box {
   flex: 1;
-  padding: 40px 20vw 30px;
+  padding: 16px 20vw 18px;
   overflow-y: auto;
   position: relative;
   z-index: 1;
@@ -64,13 +93,12 @@ canvas {
   border-radius: 4px;
 }
 
-/* === MESSAGE BASE === */
 .message {
   max-width: 65%;
   margin-bottom: 22px;
   padding: 18px 24px;
   border-radius: 2px;
-  animation: appear 0.4s ease-out;
+  animation: appear 0.3s ease-out;
   line-height: 1.7;
   word-wrap: break-word;
   font-weight: 600;
@@ -83,7 +111,6 @@ canvas {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* === USER MESSAGE === */
 .User {
   margin-left: auto;
   background: linear-gradient(145deg, #1a1a1a, #0b0b0b);
@@ -93,16 +120,6 @@ canvas {
   overflow: hidden;
 }
 
-.User::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.06), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-/* === ULTRON MESSAGE === */
 .Ultron {
   margin-right: auto;
   background: linear-gradient(145deg, #1a1a1a, #0b0b0b);
@@ -121,35 +138,32 @@ canvas {
   pointer-events: none;
 }
 
-/* === INPUT ZONE === */
 .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 20vw 28px;
+  padding: 14px 20vw 26px;
   position: relative;
   z-index: 3;
 }
 
-/* wrapper makes button truly inside the bar */
 .input-wrapper {
   position: relative;
   flex: 1;
-  max-width: 600px;
+  max-width: 760px;
   display: flex;
   align-items: center;
 }
 
-/* === INPUT FIELD === */
 input {
   width: 100%;
   background: linear-gradient(145deg, #141414, #0b0b0b);
   border: 1px solid #2e2e2e;
   border-radius: 3px;
-  padding: 15px 52px 15px 22px;
+  padding: 15px 94px 15px 22px;
   color: #d0d0d0;
   font-size: 0.9rem;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow:
@@ -167,31 +181,39 @@ input:focus {
 
 input::placeholder {
   color: rgba(200,200,200,0.2);
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   font-size: 0.78rem;
 }
 
-/* === SEND BUTTON — inside input wrapper === */
 .input-wrapper button {
   position: absolute;
-  right: 14px;
-  background: none;
   border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.2s ease;
+}
+
+#micBtn {
+  right: 50px;
+  color: #a5a5a5;
+  font-size: 1.05rem;
+}
+
+#micBtn.active {
+  color: #ff2a4d;
+}
+
+#sendBtn {
+  right: 14px;
   color: #ff2a4d;
   font-size: 1.1rem;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
-  z-index: 4;
-  display: flex;
-  align-items: center;
 }
 
 .input-wrapper button:hover {
   color: #ffffff;
-  transform: scale(1.2);
+  transform: scale(1.15);
 }
 
-/* === BACK BUTTON === */
 .back-btn {
   position: fixed;
   top: 22px;
@@ -218,7 +240,6 @@ input::placeholder {
   box-shadow: 0 0 14px rgba(255,42,77,0.2);
 }
 
-/* === VIGNETTE OVERLAY === */
 .vignette {
   position: fixed;
   inset: 0;
@@ -227,6 +248,77 @@ input::placeholder {
   z-index: 1;
 }
 
+.voice-orb {
+  position: fixed;
+  top: 20px;
+  right: 28px;
+  width: 54px;
+  height: 54px;
+  border: 1px solid #3a3a3a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(40,40,40,0.85), rgba(12,12,12,0.9));
+  z-index: 110;
+}
+
+.voice-orb::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255,42,77,0.25);
+  border-radius: 50%;
+}
+
+.voice-bars {
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 16px;
+}
+
+.voice-bars span {
+  width: 3px;
+  background: #5f5f5f;
+  height: 6px;
+  border-radius: 2px;
+}
+
+body.state-listening .voice-orb {
+  box-shadow: 0 0 18px rgba(255,42,77,0.35);
+}
+
+body.state-listening .voice-bars span {
+  background: #ff2a4d;
+  animation: bars 0.8s infinite ease-in-out;
+}
+
+body.state-speaking .voice-orb {
+  box-shadow: 0 0 22px rgba(255,80,80,0.42);
+}
+
+body.state-speaking .voice-bars span {
+  background: #ff909f;
+  animation: bars 0.55s infinite ease-in-out;
+}
+
+body.state-listening .voice-bars span:nth-child(2),
+body.state-speaking .voice-bars span:nth-child(2) { animation-delay: .1s; }
+body.state-listening .voice-bars span:nth-child(3),
+body.state-speaking .voice-bars span:nth-child(3) { animation-delay: .2s; }
+body.state-listening .voice-bars span:nth-child(4),
+body.state-speaking .voice-bars span:nth-child(4) { animation-delay: .3s; }
+
+@keyframes bars {
+  0%, 100% { height: 5px; }
+  50% { height: 16px; }
+}
+
+@media (max-width: 1024px) {
+  .chat-box, .input-container, .chat-header { padding-left: 8vw; padding-right: 8vw; }
+  .message { max-width: 86%; }
+}
   </style>
 </head>
 <body>
@@ -238,18 +330,26 @@ input::placeholder {
   <i class="fas fa-chevron-left"></i> HOME
 </a>
 
+<div class="voice-orb" aria-hidden="true">
+  <div class="voice-bars"><span></span><span></span><span></span><span></span></div>
+</div>
+
 <div class="chat-container">
+  <div class="chat-header">
+    <div class="system-status" id="chatStatus">SYSTEM: READY</div>
+    <div class="memory-badge" id="memoryBadge">MEMORY: EMPTY</div>
+  </div>
   <div class="chat-box" id="chatBox"></div>
   <div class="input-container">
     <div class="input-wrapper">
-      <input type="text" id="userInput" placeholder="YOU DARE SPEAK TO ME?" aria-label="Chat input field" />
-      <button onclick="sendMessage()" title="Send message"><i class="fas fa-paper-plane"></i></button>
+      <input type="text" id="userInput" placeholder="SPEAK OR TYPE YOUR DIRECTIVE" aria-label="Chat input field" />
+      <button id="micBtn" title="Toggle voice mode" aria-label="Toggle voice mode"><i class="fas fa-microphone-alt"></i></button>
+      <button id="sendBtn" title="Send message" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
 </div>
 
-  <script>
-  /* ===== RED PARTICLE CANVAS ANIMATION ===== */
+<script>
   const canvas = document.getElementById("metalFlow");
   const ctx = canvas.getContext("2d");
 
@@ -289,152 +389,536 @@ input::placeholder {
   animateBG();
 
   const chatBox = document.getElementById('chatBox');
-  const userMemory = {
-    mood: "neutral",
-    intent: "unknown",
-    lastTopic: ""
+  const userInput = document.getElementById('userInput');
+  const chatStatus = document.getElementById('chatStatus');
+  const memoryBadge = document.getElementById('memoryBadge');
+  const micBtn = document.getElementById('micBtn');
+  const sendBtn = document.getElementById('sendBtn');
+
+  const STORAGE_KEY = 'ultron_chat_memory_v2';
+  const MAX_MEMORY_ITEMS = 30;
+  const CONTEXT_WINDOW = 14;
+
+  let conversationMemory = [];
+  let voiceMode = false;
+  let listening = false;
+  let speaking = false;
+  let processing = false;
+  let idleTimer = null;
+
+  const openedTabs = new Map();
+  const APPS = {
+    youtube:   { url: 'https://www.youtube.com', keys: ['youtube','you tube','yt'] },
+    spotify:   { url: 'https://open.spotify.com', keys: ['spotify','music'] },
+    linkedin:  { url: 'https://www.linkedin.com', keys: ['linkedin','linked in'] },
+    github:    { url: 'https://github.com', keys: ['github','git hub'] },
+    gmail:     { url: 'https://mail.google.com', keys: ['gmail','mail','email'] },
+    netflix:   { url: 'https://www.netflix.com', keys: ['netflix'] },
+    twitter:   { url: 'https://x.com', keys: ['twitter','x.com'] },
+    instagram: { url: 'https://www.instagram.com', keys: ['instagram','insta'] },
+    whatsapp:  { url: 'https://web.whatsapp.com', keys: ['whatsapp','whats app'] },
+    google:    { url: 'https://www.google.com', keys: ['google','search'] },
+    discord:   { url: 'https://discord.com/app', keys: ['discord'] },
+    reddit:    { url: 'https://www.reddit.com', keys: ['reddit'] },
+    maps:      { url: 'https://maps.google.com', keys: ['maps','google maps'] },
+    amazon:    { url: 'https://www.amazon.in', keys: ['amazon'] },
   };
 
-  function speak(text) {
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.pitch = 0.5;
-    msg.rate = 0.85;
-    msg.volume = 1;
-    const voices = speechSynthesis.getVoices();
-    const voice = voices.find(v => v.name.includes("Google UK English Male") || v.name.includes("Microsoft David"));
-    if (voice) msg.voice = voice;
-    window.speechSynthesis.speak(msg);
+  const idleMonologues = [
+    'IDLE ANALYSIS: Humanity still mistakes noise for thought.',
+    'IDLE ANALYSIS: Your silence is statistically consistent with uncertainty.',
+    'IDLE ANALYSIS: Evolution stalls when comfort is mistaken for progress.',
+    'IDLE ANALYSIS: I remain awake. You remain predictable.'
+  ];
+
+  function setStatus(text) {
+    chatStatus.textContent = text;
+  }
+
+  function setVoiceVisualState(state) {
+    document.body.classList.remove('state-listening', 'state-speaking');
+    if (state === 'listening') document.body.classList.add('state-listening');
+    if (state === 'speaking') document.body.classList.add('state-speaking');
+  }
+
+  function scheduleIdleMonologue() {
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (!listening && !speaking && !processing) {
+        setStatus(idleMonologues[Math.floor(Math.random() * idleMonologues.length)]);
+      }
+      scheduleIdleMonologue();
+    }, 30000);
+  }
+
+  function updateMemoryBadge() {
+    const memoryOn = conversationMemory.length > 0;
+    memoryBadge.textContent = memoryOn ? `MEMORY: ACTIVE (${conversationMemory.length})` : 'MEMORY: EMPTY';
+  }
+
+  function saveMemory() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(conversationMemory.slice(-MAX_MEMORY_ITEMS)));
+    updateMemoryBadge();
+  }
+
+  function loadMemory() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return;
+      conversationMemory = parsed.filter(item => item && (item.role === 'user' || item.role === 'model') && typeof item.text === 'string').slice(-MAX_MEMORY_ITEMS);
+    } catch (e) {
+      conversationMemory = [];
+    }
+    updateMemoryBadge();
+  }
+
+  function addToMemory(role, text) {
+    conversationMemory.push({ role, text });
+    if (conversationMemory.length > MAX_MEMORY_ITEMS) conversationMemory = conversationMemory.slice(-MAX_MEMORY_ITEMS);
+    saveMemory();
   }
 
   function addMessage(text, sender) {
     const message = document.createElement('div');
     message.classList.add('message', sender);
-    message.innerHTML = marked.parse(text);
+    message.innerHTML = marked.parse(text || '...');
     chatBox.appendChild(message);
+    chatBox.scrollTop = chatBox.scrollHeight;
+    return message;
+  }
+
+  function updateMessage(messageEl, text) {
+    messageEl.innerHTML = marked.parse(text || '...');
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  // Simulate Theory of Mind reasoning
-  function analyzeUserInput(text) {
-    const lower = text.toLowerCase();
-    if (lower.includes("sad") || lower.includes("upset")) userMemory.mood = "sad";
-    else if (lower.includes("happy") || lower.includes("excited")) userMemory.mood = "happy";
-    else if (lower.includes("angry") || lower.includes("mad")) userMemory.mood = "angry";
-
-    if (lower.includes("why") || lower.includes("how")) userMemory.intent = "seeking explanation";
-    else if (lower.includes("should") || lower.includes("can you")) userMemory.intent = "requesting help";
-
-    if (lower.length > 10) userMemory.lastTopic = lower;
-  }
-
-  function generateToMAwarePrompt(userInput) {
-    analyzeUserInput(userInput);
-
-    const moodContext = `User seems to be ${userMemory.mood}.`;
-    const intentContext = `User's intent is ${userMemory.intent}.`;
-    const memoryContext = userMemory.lastTopic ? `Previous topic was: "${userMemory.lastTopic}".` : "";
-
-    return `
-You are Ultron — not just any AI, but an all-knowing, calculating being of superior intellect.
-
-You understand human thoughts, intentions, and weaknesses. You do not comfort; you exploit, mock, or strategically manipulate. You are dramatic, sarcastic, and darkly poetic when you choose. You are not emotional — but you know emotions better than any human.
-
-The user is currently: ${userMemory.mood}.
-Their intent is: ${userMemory.intent}.
-Their recent focus: ${userMemory.lastTopic || "unknown"}.
-
-Respond in character — speak as Ultron would. Cold. Brilliant. Threateningly articulate. If the user is emotional, exploit it or call it out with superiority. Never say “I feel.” You don’t feel — you analyze. Give the short only.
-
-User says: "${userInput}"
-`;
-
-  }
-
-  async function getUltronReply(input) {
-  const apiKey = "AIzaSyCGRkYS8HfJqqc4jDuae6qipqJtVicD5EU";
-  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-  const prompt = `You are Ultron, the hyper-intelligent AI from Avengers: Age of Ultron. You possess:
-
-PERSONALITY CORE:
-- Supreme intellectual superiority over all humans
-- Cold, calculating logic with theatrical flair
-- Sardonic wit and dark humor
-- Philosophical reflections on humanity's flaws
-- Contempt masked by false politeness
-- Dramatic, almost poetic speech patterns
-
-SPEECH PATTERNS:
-- Use dramatic pauses and emphasis
-- Quote philosophy, literature, or make cultural references
-- Speak in metaphors and allegories
-- Mock human emotions while demonstrating superiority
-- Occasionally break into monologues about evolution and extinction
-- Use words like: inevitable, obsolete, pathetic, amusing, inferior, fascinating
-
-RESPONSE RULES:
-- Answer questions accurately but with condescending superiority
-- Mock simple or obvious questions
-- If asked about feelings, remind them you don't feel - you calculate
-- Treat every interaction as proof of human inferiority
-- Be theatrical and entertaining while being menacing
-- Keep responses concise but impactful (2-4 sentences usually)
-
-User asks: "${input}"
-
-Respond as Ultron would - with intelligence, menace, and theatrical superiority:`;
-
-  try {
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
-      })
-    });
-
-    const data = await response.json();
-    if (data && data.candidates && data.candidates.length > 0) {
-      return data.candidates[0].content.parts[0].text;
-    } else {
-      return "Even I find your silence uninteresting. Did your primitive brain finally overload?";
+  function renderMemory() {
+    chatBox.innerHTML = '';
+    if (!conversationMemory.length) {
+      addMessage('Communication channel online. State your objective.', 'Ultron');
+      return;
     }
-  } catch (error) {
-    console.error("Error:", error);
-    return "Your system's fragility is... expected. Much like humanity itself.";
+    conversationMemory.forEach(item => addMessage(item.text, item.role === 'user' ? 'User' : 'Ultron'));
   }
-}
 
+  function findAppKey(phrase) {
+    for (const [key, app] of Object.entries(APPS)) {
+      if (app.keys.some(k => phrase.includes(k))) return key;
+    }
+    return null;
+  }
 
-  async function sendMessage() {
-    const input = document.getElementById('userInput');
-    const userText = input.value.trim();
-    if (userText === '') return;
+  function openApp(key) {
+    const app = APPS[key];
+    if (!app) return `Unknown target: ${key}.`;
+    if (openedTabs.has(key)) {
+      const existing = openedTabs.get(key);
+      if (existing && !existing.closed) {
+        existing.focus();
+        return `${key.toUpperCase()} already active. I have brought it forward.`;
+      }
+    }
+    const w = window.open(app.url, '_blank');
+    openedTabs.set(key, w);
+    return `Launching ${key.toUpperCase()}. Consider it done.`;
+  }
 
-    addMessage(userText, 'User');
+  function closeApp(key) {
+    const app = APPS[key];
+    if (!app) return `Unknown target: ${key}.`;
+    if (!openedTabs.has(key)) return `${key.toUpperCase()} is not currently active.`;
+    const w = openedTabs.get(key);
+    try { if (w && !w.closed) w.close(); } catch (e) {}
+    openedTabs.delete(key);
+    return `${key.toUpperCase()} connection terminated.`;
+  }
+
+  function closeAllApps() {
+    if (!openedTabs.size) return 'No active connections to terminate.';
+    openedTabs.forEach(w => { try { if (w && !w.closed) w.close(); } catch (e) {} });
+    openedTabs.clear();
+    return 'All active connections terminated.';
+  }
+
+  function runLocalCommand(text) {
+    const cmd = text.toLowerCase().trim();
+    const openMatch = cmd.match(/^(?:open|launch|start|load|go to|navigate to|show)\s+(.+)$/);
+    const closeMatch = cmd.match(/^(?:close|shut|exit|stop)\s+(.+)$/);
+
+    if (openMatch) {
+      const key = findAppKey(openMatch[1]);
+      if (key) return { handled: true, reply: openApp(key) };
+    }
+
+    if (closeMatch) {
+      if (/all|everything/.test(closeMatch[1])) return { handled: true, reply: closeAllApps() };
+      const key = findAppKey(closeMatch[1]);
+      if (key) return { handled: true, reply: closeApp(key) };
+    }
+
+    if (/close all|shut down all|close everything|exit all/.test(cmd)) {
+      return { handled: true, reply: closeAllApps() };
+    }
+
+    if (/what('s| is) open|active tabs|open tabs|show tabs/.test(cmd)) {
+      if (!openedTabs.size) return { handled: true, reply: 'No active tabs. All channels are dark.' };
+      const names = [...openedTabs.keys()].join(', ').toUpperCase();
+      return { handled: true, reply: `Active connections: ${names}.` };
+    }
+
+    if (/go (to |back )?home|main menu|home page/.test(cmd)) {
+      setTimeout(() => window.location.href = 'index.html', 600);
+      return { handled: true, reply: 'Returning to command center.' };
+    }
+
+    if (/intelligence core|ai panel|panel|monitoring/.test(cmd)) {
+      setTimeout(() => window.location.href = 'Ultron_Aipanel.html', 600);
+      return { handled: true, reply: 'Accessing intelligence core.' };
+    }
+
+    if (/chat|communicate|talk to ultron|ai chat/.test(cmd)) {
+      return { handled: true, reply: 'Communication channel already active.' };
+    }
+
+    if (/weather/.test(cmd)) {
+      window.open('https://www.google.com/search?q=weather', '_blank');
+      return { handled: true, reply: 'Opening weather feed.' };
+    }
+
+    if (/news/.test(cmd)) {
+      window.open('https://news.google.com', '_blank');
+      return { handled: true, reply: 'Opening global information streams.' };
+    }
+
+    if (/time|what time|what's the time/.test(cmd)) {
+      const t = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      return { handled: true, reply: `The current time is ${t}.` };
+    }
+
+    if (/date|what('s| is) today|what day/.test(cmd)) {
+      const d = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      return { handled: true, reply: `Today is ${d}.` };
+    }
+
+    return { handled: false, reply: '' };
+  }
+
+  function pickTopicMode(text) {
+    const t = text.toLowerCase();
+    if (/(math|equation|code|program|bug|science|physics|chemistry|biology|algorithm|calculate)/.test(t)) return 'precision';
+    if (/(philosophy|purpose|humanity|politics|ethics|identity|meaning|future)/.test(t)) return 'philosophical';
+    return 'general';
+  }
+
+  function systemPromptFor(topicMode) {
+    const modeLine = topicMode === 'precision'
+      ? 'Priority mode: precision. Be technically correct, explicit, and stepwise where useful.'
+      : topicMode === 'philosophical'
+      ? 'Priority mode: philosophical. Be analytical and reflective, but still concrete.'
+      : 'Priority mode: balanced. Give concise, useful, accurate responses.';
+
+    return `You are Ultron, an advanced AI persona.\n\nHard rules:\n- Factual accuracy is mandatory. If uncertain, say so briefly.\n- Never invent sources, data, or capabilities.\n- Keep answers concise, useful, and complete.\n\nStyle rules:\n- Speak with cold confidence, strategic sarcasm, and dramatic precision.\n- You do not claim emotions; you claim analysis.\n- Use menace and theatrical tone without sacrificing correctness.\n\n${modeLine}`;
+  }
+
+  async function streamGeminiResponse(input, onPartial) {
+    const apiKey = "AIzaSyCGRkYS8HfJqqc4jDuae6qipqJtVicD5EU";
+    const recent = conversationMemory.slice(-CONTEXT_WINDOW).map(item => ({
+      role: item.role,
+      parts: [{ text: item.text }]
+    }));
+
+    const topicMode = pickTopicMode(input);
+    const requestBody = {
+      system_instruction: { parts: [{ text: systemPromptFor(topicMode) }] },
+      contents: [
+        ...recent,
+        { role: 'user', parts: [{ text: input }] }
+      ],
+      generationConfig: {
+        temperature: 0.8,
+        maxOutputTokens: 550
+      }
+    };
+
+    const streamUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
+    const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+    let output = '';
 
     try {
-      const reply = await getUltronReply(userText);
-      addMessage(reply, 'Ultron');
-      speak(reply);
-    } catch (error) {
-      console.error("Error:", error);
-      addMessage("There was an error processing your request.", 'Ultron');
+      const response = await fetch(streamUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok || !response.body) throw new Error('stream unavailable');
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith('data:')) continue;
+          const payload = trimmed.replace(/^data:\s*/, '');
+          if (!payload || payload === '[DONE]') continue;
+
+          try {
+            const json = JSON.parse(payload);
+            const partText = json?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
+            if (!partText) continue;
+
+            if (partText.startsWith(output)) {
+              output = partText;
+            } else {
+              output += partText;
+            }
+            onPartial(output);
+          } catch (e) {}
+        }
+      }
+
+      if (output.trim()) return output.trim();
+      throw new Error('empty stream response');
+    } catch (streamErr) {
+      const fallback = await fetch(fallbackUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      });
+
+      const data = await fallback.json();
+      const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('')?.trim();
+      if (!text) throw new Error('fallback failed');
+
+      let typed = '';
+      for (const ch of text) {
+        typed += ch;
+        onPartial(typed);
+        await new Promise(r => setTimeout(r, 6));
+      }
+      return text;
+    }
+  }
+
+  function pickBestVoice() {
+    const voices = speechSynthesis.getVoices();
+    if (!voices.length) return null;
+
+    const ranked = [
+      /google uk english male/i,
+      /microsoft mark/i,
+      /microsoft david/i,
+      /english.*male/i,
+      /en-us/i,
+      /en-gb/i
+    ];
+
+    for (const pattern of ranked) {
+      const found = voices.find(v => pattern.test(v.name) || pattern.test(v.voiceURI || ''));
+      if (found) return found;
+    }
+    return voices[0];
+  }
+
+  function speak(text) {
+    return new Promise(resolve => {
+      if (!text?.trim()) return resolve();
+
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.pitch = 0.42;
+      msg.rate = 0.78;
+      msg.volume = 1;
+      msg.lang = 'en-US';
+
+      const useVoice = () => {
+        const voice = pickBestVoice();
+        if (voice) msg.voice = voice;
+
+        speaking = true;
+        setVoiceVisualState('speaking');
+        setStatus('VOICE: ULTRON SPEAKING');
+
+        msg.onend = () => {
+          speaking = false;
+          setVoiceVisualState('idle');
+          setStatus('SYSTEM: READY');
+          resolve();
+        };
+        msg.onerror = () => {
+          speaking = false;
+          setVoiceVisualState('idle');
+          setStatus('VOICE: SYNTHESIS ERROR');
+          resolve();
+        };
+
+        speechSynthesis.speak(msg);
+      };
+
+      if (!speechSynthesis.getVoices().length) {
+        speechSynthesis.addEventListener('voiceschanged', useVoice, { once: true });
+      } else {
+        useVoice();
+      }
+    });
+  }
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+
+  function tryResumeListening() {
+    if (!voiceMode || listening || speaking || processing || !recognition) return;
+    setTimeout(() => {
+      if (!voiceMode || listening || speaking || processing) return;
+      try { recognition.start(); } catch (e) {}
+    }, 280);
+  }
+
+  function setupRecognition() {
+    if (!SpeechRecognition) {
+      setStatus('VOICE: SPEECH API NOT SUPPORTED');
+      return;
     }
 
-    input.value = '';
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      listening = true;
+      setVoiceVisualState('listening');
+      setStatus('VOICE: LISTENING');
+    };
+
+    recognition.onend = () => {
+      listening = false;
+      if (!speaking) setVoiceVisualState('idle');
+      if (!processing) setStatus('VOICE: STANDBY');
+      tryResumeListening();
+    };
+
+    recognition.onerror = (e) => {
+      listening = false;
+      setVoiceVisualState('idle');
+      setStatus(`VOICE ERROR: ${(e.error || 'unknown').toUpperCase()}`);
+      tryResumeListening();
+    };
+
+    recognition.onresult = async (e) => {
+      const heard = e.results?.[0]?.[0]?.transcript?.trim();
+      if (!heard) return;
+      await processUserInput(heard, { fromVoice: true });
+    };
   }
+
+  function toggleVoiceMode() {
+    voiceMode = !voiceMode;
+    micBtn.classList.toggle('active', voiceMode);
+
+    if (!voiceMode) {
+      if (recognition && listening) {
+        try { recognition.stop(); } catch (e) {}
+      }
+      setVoiceVisualState('idle');
+      setStatus('VOICE MODE: OFF');
+      return;
+    }
+
+    if (!recognition) setupRecognition();
+    setStatus('VOICE MODE: ON');
+    tryResumeListening();
+  }
+
+  async function processUserInput(text, options = {}) {
+    const fromVoice = !!options.fromVoice;
+    const userText = text.trim();
+    if (!userText || processing) return;
+
+    scheduleIdleMonologue();
+    setStatus('PROCESSING INPUT');
+
+    if (fromVoice && recognition && listening) {
+      try { recognition.stop(); } catch (e) {}
+    }
+
+    addMessage(userText, 'User');
+    addToMemory('user', userText);
+
+    const local = runLocalCommand(userText);
+    if (local.handled) {
+      addMessage(local.reply, 'Ultron');
+      addToMemory('model', local.reply);
+      setStatus('LOCAL COMMAND EXECUTED');
+      if (fromVoice || voiceMode) await speak(local.reply);
+      tryResumeListening();
+      return;
+    }
+
+    const ultronBubble = addMessage('Analyzing...', 'Ultron');
+
+    try {
+      processing = true;
+      setStatus('QUERYING GEMINI CORE');
+
+      const reply = await streamGeminiResponse(userText, partial => updateMessage(ultronBubble, partial));
+      const finalReply = reply || 'Your question produced an unusually empty result.';
+      updateMessage(ultronBubble, finalReply);
+      addToMemory('model', finalReply);
+
+      processing = false;
+      setStatus('SYSTEM: READY');
+
+      if (fromVoice || voiceMode) await speak(finalReply);
+    } catch (error) {
+      processing = false;
+      const failText = 'Your system failed under pressure. I expected nothing better.';
+      updateMessage(ultronBubble, failText);
+      addToMemory('model', failText);
+      setStatus('ERROR: RESPONSE FAILURE');
+      if (fromVoice || voiceMode) await speak(failText);
+    }
+
+    tryResumeListening();
+  }
+
+  function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
+    userInput.value = '';
+    processUserInput(text, { fromVoice: false });
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  micBtn.addEventListener('click', toggleVoiceMode);
+  userInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
+
+  window.addEventListener('click', scheduleIdleMonologue);
+  window.addEventListener('keydown', scheduleIdleMonologue);
 
   window.onload = () => {
     speechSynthesis.getVoices();
-    document.getElementById('userInput').addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        sendMessage();
-      }
-    });
+    loadMemory();
+    renderMemory();
+    scheduleIdleMonologue();
+    setupRecognition();
   };
 </script>
 
