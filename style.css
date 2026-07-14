@@ -1,3 +1,6 @@
+:root {
+  --color-accent: 255, 42, 77; /* RGB format for rgba() to work */
+}
 * {
   margin: 0;
   padding: 0;
@@ -18,8 +21,12 @@ body {
 /* BACKGROUND CANVAS */
 canvas {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
+  display: block;
 }
 
 /* MAIN STAGE */
@@ -355,4 +362,121 @@ canvas {
   letter-spacing: 3px;
   color: #444;
   margin-top: -30px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTELLIGENCE CORE: VITAL ANIMATIONS & HUD EFFECTS
+═══════════════════════════════════════════════════════════ */
+
+/* 1. Vital Rings Breathing Effect */
+.vital-box {
+    position: relative;
+    border: 1px solid rgba(var(--color-accent), 0.3);
+    animation: panelPulse 4s infinite ease-in-out;
+}
+
+@keyframes panelPulse {
+    0%, 100% { border-color: rgba(var(--color-accent), 0.3); box-shadow: inset 0 0 10px rgba(var(--color-accent), 0.05); }
+    50% { border-color: rgba(var(--color-accent), 0.6); box-shadow: inset 0 0 20px rgba(var(--color-accent), 0.15); }
+}
+
+/* 2. CRT Scanline Overlay (Living feel) */
+body::before {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.1) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.05;
+}
+
+/* 3. Glowing Data Numbers (Text Flicker) */
+.percentage-text {
+    animation: textFlicker 3s infinite;
+    text-shadow: 0 0 8px rgba(var(--color-accent), 0.6);
+}
+
+@keyframes textFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+    51% { opacity: 1; }
+}
+
+/* 4. Command History Typewriter Entrance */
+.command-entry {
+    animation: fadeInEntry 0.5s ease-out forwards;
+    border-left: 2px solid var(--color-accent);
+    padding-left: 10px;
+    margin-bottom: 5px;
+}
+
+@keyframes fadeInEntry {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* 5. Subtle Ambient Background Shift (Micro-motion) */
+@keyframes ambientShift {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+}
+.stage {
+    animation: ambientShift 20s infinite ease-in-out;
+}
+
+/* === JITTER PHYSICS FOR UNSTABLE CONNECTION === */
+@keyframes jitter {
+  0%, 100% { opacity: 0.99; filter: none; }
+  33% { opacity: 0.88; filter: hue-rotate(5deg) contrast(1.2); }
+  66% { opacity: 0.95; filter: contrast(0.9); }
+  90% { opacity: 0.92; filter: skewX(-1deg); }
+  95% { opacity: 0.85; filter: blur(0.5px); }
+}
+
+.core-text h1, .quote p, .tagline {
+  /* animation: jitter 0.5s infinite steps(2); */
+}
+
+/* Enable 3D depth on the container */
+.stage {
+    perspective: 1500px;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out; /* Smoothness */
+}
+
+/* Add a physical "lift" to the cards */
+.actions button, .vital-box {
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+    /* Yeh variable JS se update hoga */
+    box-shadow: var(--shadow-dynamic, 0 10px 30px rgba(0,0,0,0.5));
+}
+
+#metalFlow{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-2;
+
+    background:
+        radial-gradient(circle at center,
+            #171717 0%,
+            #0c0c0c 45%,
+            #040404 100%);
+}
+
+.hex{
+
+animation:
+var(--hex-animation)
+8s infinite linear;
+
 }

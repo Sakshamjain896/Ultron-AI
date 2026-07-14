@@ -1,4 +1,4 @@
-﻿/* ===== CANVAS ANIMATION — HEX GRID PULSE ===== */
+/* ===== CANVAS ANIMATION — HEX GRID PULSE ===== */
 const canvas = document.getElementById("metalFlow");
 const ctx = canvas.getContext("2d");
 
@@ -7,6 +7,29 @@ const HEX_SIZE = 28;    // radius of each hex
 const HEX_GAP  = 3;     // gap between hexes
 let hexes = [];         // { cx, cy, pulse, phase, speed, lit }
 let pulseWaves = [];    // { cx, cy, radius, alpha } — expanding ring waves
+
+let accentColorRGB = { r: 255, g: 42, b: 77 };
+function updateAccentColor() {
+  const rootStyle = getComputedStyle(document.documentElement);
+  const accent = rootStyle.getPropertyValue('--theme-accent').trim() || rootStyle.getPropertyValue('--color-accent').trim();
+  if (accent && accent.startsWith('#')) {
+    const r = parseInt(accent.slice(1, 3), 16);
+    const g = parseInt(accent.slice(3, 5), 16);
+    const b = parseInt(accent.slice(5, 7), 16);
+    accentColorRGB = { r, g, b };
+  }
+}
+updateAccentColor();
+window.addEventListener("storage", (e) => {
+  if (e.key === "ultron_settings_nested" || e.key === "ultron_settings") {
+    setTimeout(updateAccentColor, 50);
+  }
+});
+const themeObserver = new MutationObserver(() => {
+  updateAccentColor();
+});
+themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style"] });
+themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class", "style"] });
 
 function hexCorner(cx, cy, size, i) {
   const angle = (Math.PI / 180) * (60 * i - 30);
@@ -67,12 +90,28 @@ function drawHex(cx, cy, size, fillStyle, strokeStyle) {
 function animateBG() {
   ctx.clearRect(0, 0, W, H);
 
-  // Background gradient
-  const grad = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.7);
-  grad.addColorStop(0,   "#04080f");
-  grad.addColorStop(0.5, "#020408");
-  grad.addColorStop(1,   "#000000");
-  ctx.fillStyle = grad;
+  // Background gradient aligned with variation theme
+  const isLight = document.documentElement.classList.contains("theme-silver-core");
+  const isAlert = document.documentElement.classList.contains("theme-hologram-red");
+  
+  let bgGrad;
+  if (isLight) {
+    bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.7);
+    bgGrad.addColorStop(0,   "#ffffff");
+    bgGrad.addColorStop(0.5, "#f0f3f6");
+    bgGrad.addColorStop(1,   "#d9e1e8");
+  } else if (isAlert) {
+    bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.7);
+    bgGrad.addColorStop(0,   "#251300");
+    bgGrad.addColorStop(0.5, "#150900");
+    bgGrad.addColorStop(1,   "#050200");
+  } else {
+    bgGrad = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, Math.max(W, H) * 0.7);
+    bgGrad.addColorStop(0,   "#04080f");
+    bgGrad.addColorStop(0.5, "#020408");
+    bgGrad.addColorStop(1,   "#000000");
+  }
+  ctx.fillStyle = bgGrad;
   ctx.fillRect(0, 0, W, H);
 
   // Draw hex grid
@@ -82,13 +121,13 @@ function animateBG() {
     const glow = (Math.sin(h.phase) + 1) / 2; // 0‒1
 
     if (h.lit) {
-      // Lit hexes pulse red
+      // Lit hexes pulse accent color
       const intensity = 0.12 + glow * 0.25;
-      drawHex(h.cx, h.cy, HEX_SIZE - 1, `rgba(255,42,77,${intensity * 0.4})`, `rgba(255,42,77,${intensity})`);
+      drawHex(h.cx, h.cy, HEX_SIZE - 1, `rgba(${accentColorRGB.r},${accentColorRGB.g},${accentColorRGB.b},${intensity * 0.4})`, `rgba(${accentColorRGB.r},${accentColorRGB.g},${accentColorRGB.b},${intensity})`);
     } else {
       // Dim hexes — barely visible grid
       const dim = 0.035 + glow * 0.02;
-      drawHex(h.cx, h.cy, HEX_SIZE - 1, null, `rgba(255,42,77,${dim})`);
+      drawHex(h.cx, h.cy, HEX_SIZE - 1, null, `rgba(${accentColorRGB.r},${accentColorRGB.g},${accentColorRGB.b},${dim})`);
     }
 
     // Random chance to flip lit state (creates living grid effect)
@@ -100,7 +139,7 @@ function animateBG() {
   pulseWaves.forEach(pw => {
     ctx.beginPath();
     ctx.arc(pw.cx, pw.cy, pw.radius, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(255, 80, 100, ${pw.alpha})`;
+    ctx.strokeStyle = `rgba(${accentColorRGB.r}, ${accentColorRGB.g}, ${accentColorRGB.b}, ${pw.alpha})`;
     ctx.lineWidth = 2;
     ctx.stroke();
 
