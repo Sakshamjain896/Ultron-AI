@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Primus :: SYSTEM INITIALIZED</title>
+
+  <link rel="icon" href="marvel-ultron.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
+  <script src="globalThemeLoader.js"></script>
+</head>
+
+<body>
+
+<canvas id="metalFlow"></canvas>
+
+<!-- PROFILE ICON (shown after login) -->
+<div class="profile-badge" id="profileBadge">
+  <a href="profile.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit;" title="Access System Configuration">
+    <div class="profile-avatar"><i class="fas fa-user"></i></div>
+    <span class="profile-label" id="profileLabel">OPERATOR</span>
+  </a>
+  <button class="logout-btn" id="logoutBtn" title="Logout"><i class="fas fa-sign-out-alt"></i> LOGOUT</button>
+</div>
+
+<!-- LOGIN REQUIRED POPUP -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-popup">
+    <div class="auth-popup-accent"></div>
+    <div class="auth-icon"><i class="fas fa-lock"></i></div>
+    <h2 class="auth-title">ACCESS RESTRICTED</h2>
+    <p class="auth-msg">You must authenticate before engaging voice command protocols.</p>
+    <div class="auth-actions">
+      <a href="Ultron_homepage.html" class="auth-btn-primary">AUTHENTICATE</a>
+      <button class="auth-btn-secondary" id="authDismiss">DISMISS</button>
+    </div>
+  </div>
+</div>
+
+<!-- CYBERTRON CORE -->
+<div class="core"></div>
+
+<div class="stage">
+
+  <div class="core-text">
+    <h1>Primus</h1>
+    <p class="tagline">Autonomous Global Intelligence</p>
+  </div>
+
+  <div class="quote">
+    <p>
+      Humanity mistakes chaos for freedom.  
+      I will show you order.
+    </p>
+  </div>
+
+  <div class="actions">
+    <button data-link="Ultron_AiChat.html">INITIATE COMMUNICATION</button>
+    <button data-link="Ultron_Aipanel.html">ACCESS INTELLIGENCE CORE</button>
+  </div>
+  <button id="micBtn" type="button" aria-label="Voice Command">
+  <i class="fas fa-microphone-alt"></i>
+</button>
+
+
+  <div class="voice-status" id="voiceStatus">
+    VOICE INTERFACE: STANDBY
+  </div>
+
+</div>
+
+<script src="voice.js"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>
