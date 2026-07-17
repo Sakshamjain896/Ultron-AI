@@ -1703,16 +1703,12 @@ fps();
 
 // Hook up action buttons, logout button, and dismiss button
 function initAppInterface() {
+    const allowedLinks = new Set(["Ultron_AiChat.html", "Ultron_Aipanel.html"]);
     document.querySelectorAll("button[data-link]").forEach(btn => {
         btn.addEventListener("click", () => {
             const dest = btn.getAttribute("data-link");
-            if (dest) {
-                try {
-                    const target = new URL(dest, window.location.origin);
-                    if (target.origin === window.location.origin) {
-                        window.location.href = `${target.pathname}${target.search}${target.hash}`;
-                    }
-                } catch {}
+            if (dest && allowedLinks.has(dest)) {
+                window.location.href = dest;
             }
         });
     });
