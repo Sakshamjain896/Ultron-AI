@@ -1707,7 +1707,12 @@ function initAppInterface() {
         btn.addEventListener("click", () => {
             const dest = btn.getAttribute("data-link");
             if (dest) {
-                window.location.href = dest;
+                try {
+                    const target = new URL(dest, window.location.origin);
+                    if (target.origin === window.location.origin) {
+                        window.location.href = `${target.pathname}${target.search}${target.hash}`;
+                    }
+                } catch {}
             }
         });
     });
