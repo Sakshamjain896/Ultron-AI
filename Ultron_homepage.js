@@ -29,6 +29,29 @@
     }
   }
 
+  let accentColorRGB = { r: 255, g: 42, b: 77 };
+  function updateAccentColor() {
+    const rootStyle = getComputedStyle(document.documentElement);
+    const accent = rootStyle.getPropertyValue('--theme-accent').trim() || rootStyle.getPropertyValue('--color-accent').trim();
+    if (accent && accent.startsWith('#')) {
+      const r = parseInt(accent.slice(1, 3), 16);
+      const g = parseInt(accent.slice(3, 5), 16);
+      const b = parseInt(accent.slice(5, 7), 16);
+      accentColorRGB = { r, g, b };
+    }
+  }
+  updateAccentColor();
+  window.addEventListener("storage", (e) => {
+    if (e.key === "ultron_settings_nested" || e.key === "ultron_settings") {
+      setTimeout(updateAccentColor, 50);
+    }
+  });
+  const themeObserver = new MutationObserver(() => {
+    updateAccentColor();
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "style"] });
+  themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class", "style"] });
+
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -52,7 +75,7 @@
           ctx.beginPath();
           ctx.moveTo(nodes[i].x, nodes[i].y);
           ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(255, 42, 77, ${alpha})`;
+          ctx.strokeStyle = `rgba(${accentColorRGB.r}, ${accentColorRGB.g}, ${accentColorRGB.b}, ${alpha})`;
           ctx.lineWidth   = 0.7;
           ctx.stroke();
         }
@@ -64,7 +87,7 @@
       const pulse = 0.55 + 0.45 * Math.sin(n.phase);
       ctx.beginPath();
       ctx.arc(n.x, n.y, NODE_RADIUS, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 42, 77, ${pulse})`;
+      ctx.fillStyle = `rgba(${accentColorRGB.r}, ${accentColorRGB.g}, ${accentColorRGB.b}, ${pulse})`;
       ctx.fill();
     }
 
@@ -91,8 +114,8 @@ function validateLogin() {
   if (username === 'jain.saksham896@gmail.com' && password === 'S@ksham89jain') {
     errorMsg.style.color = '#4dffa0';
     errorMsg.textContent = 'IDENTITY CONFIRMED — INITIALIZING...';
-    sessionStorage.setItem('ultron_auth', 'true');
-    sessionStorage.setItem('ultron_user', username);
+    sessionStorage.setItem('cybertron_auth', 'true');
+    sessionStorage.setItem('cybertron_user', username);
     setTimeout(() => { window.location.href = 'index.html'; }, 800);
   } else {
     errorMsg.textContent = 'ACCESS DENIED — INVALID CREDENTIALS';

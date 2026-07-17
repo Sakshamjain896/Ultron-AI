@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ULTRON :: INTELLIGENCE CORE</title>
+  <title>CYBERTRON :: INTELLIGENCE CORE</title>
   <link rel="icon" href="marvel-ultron.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
   <link rel="stylesheet" href="Ultron_Aipanel.css" />
+  <script src="globalThemeLoader.js"></script>
 </head>
 <body>
 
@@ -54,7 +55,7 @@
         <div class="gauge-wrapper">
           <svg class="progress-ring" width="80" height="80">
             <circle class="progress-ring-circle-bg" stroke="#1a1a1a" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
-            <circle class="progress-ring-circle fill-power" stroke="#ff2a4d" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+            <circle class="progress-ring-circle fill-power" stroke="var(--color-accent)" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
           </svg>
           <div class="gauge-value" id="gaugePower">0%</div>
           <div class="gauge-label">POWER</div>
@@ -62,7 +63,7 @@
         <div class="gauge-wrapper">
           <svg class="progress-ring" width="80" height="80">
             <circle class="progress-ring-circle-bg" stroke="#1a1a1a" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
-            <circle class="progress-ring-circle fill-cpu" stroke="#ff2a4d" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+            <circle class="progress-ring-circle fill-cpu" stroke="var(--color-accent)" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
           </svg>
           <div class="gauge-value" id="gaugeCPU">0%</div>
           <div class="gauge-label">CPU</div>
@@ -70,7 +71,7 @@
         <div class="gauge-wrapper">
           <svg class="progress-ring" width="80" height="80">
             <circle class="progress-ring-circle-bg" stroke="#1a1a1a" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
-            <circle class="progress-ring-circle fill-net" stroke="#ff2a4d" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
+            <circle class="progress-ring-circle fill-net" stroke="var(--color-accent)" stroke-width="4" fill="transparent" r="36" cx="40" cy="40"/>
           </svg>
           <div class="gauge-value" id="gaugeNet">0%</div>
           <div class="gauge-label">NETWORK</div>
@@ -92,7 +93,7 @@
     <div class="dash-card terminal-card">
       <div class="card-header">COMMAND HISTORY</div>
       <div class="terminal-log" id="terminalLog">
-        <div class="log-entry"> > SYSTEM INITIALIZED...</div>
+        <div class="log-entry">  SYSTEM INITIALIZED...</div>
       </div>
     </div>
 

@@ -1,4 +1,14 @@
-﻿/* --- Reset ---------------------------------------- */
+/* ==========================================================================
+   CYBERTRON INTELLIGENCE CORES STYLING SYSTEM
+   ========================================================================== */
+
+:root {
+  --color-accent: #ff2a4d;
+  --color-accent-dim: rgba(255, 42, 77, 0.15);
+  --color-accent-glow: rgba(255, 42, 77, 0.45);
+}
+
+/* --- Reset ---------------------------------------- */
 *, *::before, *::after {
   margin: 0; padding: 0;
   box-sizing: border-box;
@@ -6,10 +16,14 @@
 }
 
 /* --- Body ----------------------------------------- */
+html {
+  background-color: var(--bg-primary, #020408);
+  min-height: 100vh;
+}
+
 body {
   min-height: 100vh;
-  width: 100vw;
-  background: #020408;
+  background: transparent;
   overflow-x: hidden;
   overflow-y: auto;
   color: #e0e0e0;
@@ -19,7 +33,10 @@ body {
 /* --- Canvas --------------------------------------- */
 canvas {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 1;
   pointer-events: none;
   display: block;
@@ -54,9 +71,9 @@ canvas {
   transition: all 0.3s;
 }
 .back-btn:hover {
-  border-color: #ff2a4d;
-  color: #ff2a4d;
-  box-shadow: 0 0 14px rgba(255,42,77,0.3);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 0 14px var(--color-accent-glow);
 }
 
 /* --- Stage ---------------------------------------- */
@@ -103,7 +120,7 @@ canvas {
   width: 100%;
   background: linear-gradient(145deg, #141414, #0b0b0b);
   border: 1px solid #2a2a2a;
-  border-left: 2px solid #ff2a4d;
+  border-left: 2px solid var(--color-accent);
   padding: 16px 22px;
   display: flex;
   align-items: center;
@@ -113,7 +130,7 @@ canvas {
 .status-label {
   font-size: 0.55rem;
   letter-spacing: 3px;
-  color: #ff2a4d;
+  color: var(--color-accent);
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -150,9 +167,9 @@ canvas {
   transition: all 0.3s ease;
 }
 
-.dash-card:hover { /* Glowing interaction */
+.dash-card:hover {
   border-color: #3a3a3a;
-  box-shadow: 0 0 16px rgba(255,42,77,0.1);
+  box-shadow: 0 0 16px var(--color-accent-dim);
 }
 
 .card-header {
@@ -175,7 +192,7 @@ canvas {
 }
 .world-date {
   font-size: 0.8rem;
-  color: #ff2a4d;
+  color: var(--color-accent);
   letter-spacing: 1px;
 }
 .location-row {
@@ -203,13 +220,13 @@ canvas {
   stroke: #1a1a1a;
 }
 .progress-ring-circle {
-  stroke: #ff2a4d;
-  stroke-dasharray: 226; /* 2 * pi * 36 */
+  stroke: var(--color-accent);
+  stroke-dasharray: 226; 
   stroke-dashoffset: 226;
   transition: stroke-dashoffset 0.8s ease-in-out;
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
-  filter: drop-shadow(0 0 4px #ff2a4d);
+  filter: drop-shadow(0 0 4px var(--color-accent));
 }
 .gauge-value {
   position: absolute;
@@ -236,7 +253,7 @@ canvas {
   margin: 0 auto;
   overflow: hidden;
 }
-.radar-display::before { /* Grid lines */
+.radar-display::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -249,7 +266,7 @@ canvas {
 .radar-sweep {
   position: absolute;
   inset: 0;
-  background: conic-gradient(from 0deg, transparent 60%, rgba(255,42,77,0.4));
+  background: conic-gradient(from 0deg, transparent 60%, var(--color-accent-glow));
   border-radius: 50%;
   animation: radarSpin 3s linear infinite;
 }
@@ -257,9 +274,9 @@ canvas {
   position: absolute;
   width: 4px;
   height: 4px;
-  background: #ff2a4d;
+  background: var(--color-accent);
   border-radius: 50%;
-  box-shadow: 0 0 6px #ff2a4d;
+  box-shadow: 0 0 6px var(--color-accent);
   opacity: 0;
   animation: blipFade 3s infinite;
 }
@@ -268,7 +285,7 @@ canvas {
 
 /* --- Terminal Card ----------------------------- */
 .terminal-card {
-  grid-column: 1 / -1; /* Full width */
+  grid-column: 1 / -1;
   min-height: 140px;
 }
 .terminal-log {
@@ -288,9 +305,9 @@ canvas {
   animation: entryFade 0.3s ease-in;
 }
 .log-entry:last-child {
-  color: #ff2a4d;
-  border-left-color: #ff2a4d;
-  background: linear-gradient(90deg, #ff2a4d11, transparent);
+  color: var(--color-accent);
+  border-left-color: var(--color-accent);
+  background: linear-gradient(90deg, var(--color-accent-dim), transparent);
 }
 @keyframes entryFade { from { opacity: 0; transform: translateX(-5px); } to { opacity: 1; transform: translateX(0); } }
 
@@ -323,17 +340,17 @@ canvas {
 }
 .monitor-btn:hover::before { opacity: 1; }
 .monitor-btn:hover {
-  border-color: #ff2a4d;
-  color: #ff2a4d;
-  box-shadow: 0 0 20px rgba(255,42,77,0.2);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 0 20px var(--color-accent-glow);
 }
 .monitor-btn.active {
-  border-color: #ff2a4d;
-  color: #ff2a4d;
-  box-shadow: 0 0 20px rgba(255,42,77,0.25), inset 0 0 10px rgba(255,42,77,0.05);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  box-shadow: 0 0 20px var(--color-accent-glow), inset 0 0 10px var(--color-accent-dim);
 }
 
-/* ═══════════════════════ RESPONSIVE ═══════════════ */
+/* === RESPONSIVE === */
 @media (max-width: 640px) {
   .stage { padding: 70px 14px 36px; gap: 20px; }
   .panel-header h1 { font-size: 12px; letter-spacing: 4px; }
